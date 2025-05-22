@@ -7,7 +7,5 @@ export default function ProtectedRouting({children}) {
     }else{
         return <Navigate to={'/login'}/>
     }
-  return (
-    <div>ProtectedRouting</div>
-  )
+
 }

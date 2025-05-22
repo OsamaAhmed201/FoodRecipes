@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react'
 import logoimg from '../../../assets/foodRecipe.png'
 import { data, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
 import { toast } from 'react-toastify'
 import { AuthContext } from '../../Context/authContext/AuthContextProvider.jsx'
+import { axiosInstance, USERS_URLS } from '../../Shared/baseUrl/baseUrl.js'
+import { EMAIL_VALIDTION, PASSWORD_VALIDTION } from '../../Shared/Validtion/Validtion.js'
 export default function Login() {
-  let baseUrl = `https://upskilling-egypt.com:3006`
   let [loding, setLoding] = useState(false)
   let { setToken } = useContext(AuthContext)
   let navigate = useNavigate()
@@ -19,20 +19,18 @@ export default function Login() {
   const onSubmit = async (data) => {
     try {
       setLoding(true)
-      let respons = await axios.post(`${baseUrl}/api/v1/Users/Login`, data)
-
+      let respons = await axiosInstance.post(USERS_URLS.LOGIN, data)
 
       if (respons.statusText === 'OK') {
         toast.success(`Login successful`)
         setLoding(false)
         setToken(respons.data.token)
         localStorage.setItem("token", respons.data.token)
-
         navigate('/dashboard')
       }
 
     } catch (error) {
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message || "Login Failed")
       setLoding(false)
     }
   }
@@ -64,25 +62,14 @@ export default function Login() {
                   {/* /email/ */}
                   <div className="input-group mt-3">
                     <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-envelope"></i></span>
-                    <input {...register('email', {
-                      required: 'email is require', pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: 'Email not vailed, please enter email valied'
-                      }
-                    })} type="mail" name='email' className="form-control input_email" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
-
+                    <input {...register('email', EMAIL_VALIDTION)} type="mail" name='email' className="form-control input_email" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
                   </div>
                   {errors.email && <span className='text-danger'>{errors.email.message}</span>}
 
                   {/* /password/ */}
                   <div className="input-group mt-3 position-relative all_pass ">
                     <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-key"></i></span>
-                    <input   {...register('password', {
-                      required: 'password is require', pattern: {
-                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/,
-                        message: 'The password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character  '
-                      }
-                    })} type={show ? "text" : "password"} name='password' className="form-control input_email bord_pass" placeholder="Password" aria-label="password" aria-describedby="basic-addon1" />
+                    <input   {...register('password', PASSWORD_VALIDTION)} type={show ? "text" : "password"} name='password' className="form-control input_email bord_pass" placeholder="Password" aria-label="password" aria-describedby="basic-addon1" />
                     <span
                       className="position-absolute end-0 top-50 translate-middle-y pe-2 alleye rounded-3"
                       onClick={() => setShow((prev) => !prev)}

@@ -4,8 +4,10 @@ import { data, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { axiosInstance } from '../../Shared/baseUrl/baseUrl.js'
+import { EMAIL_VALIDTION } from './../../Shared/Validtion/Validtion';
 export default function VerifyAcount() {
-  let baseUrl = `https://upskilling-egypt.com:3006`
+
   let [loding, setLoding] = useState(false)
   let navigate = useNavigate()
   let { register, watch, handleSubmit, formState: { errors } } = useForm()
@@ -17,7 +19,7 @@ export default function VerifyAcount() {
   const onSubmit = async (data) => {
     try {
       setLoding(true)
-      let respons = await axios.put(`${baseUrl}/api/v1/Users/verify`, data)
+      let respons = await axiosInstance.put(USERS_URLS.VERIFY, data)
       console.log(respons);
 
       if (respons.data.message === 'Account verified successfully') {
@@ -62,12 +64,7 @@ export default function VerifyAcount() {
                   {/* /email/ */}
                   <div className="input-group mt-3">
                     <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-envelope"></i></span>
-                    <input {...register('email', {
-                      required: 'email is require', pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: 'Email not vailed, please enter email valied'
-                      }
-                    })} type="mail" name='email' className="form-control input_height" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
+                    <input {...register('email', EMAIL_VALIDTION)} type="mail" name='email' className="form-control input_height" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
 
                   </div>
                   {errors.email && <span className='text-danger'>{errors.email.message}</span>}

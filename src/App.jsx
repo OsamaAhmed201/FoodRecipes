@@ -48,6 +48,7 @@ function App() {
         { path: 'category-data', element: <CategoryData /> },
         { path: 'users', element: <UserList /> },
         { path: 'favouruites', element: <FavoList /> },
+        
       ],
       errorElement: <Notfound />
     }

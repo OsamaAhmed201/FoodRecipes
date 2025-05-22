@@ -9,12 +9,12 @@ export default function MasterLayout() {
   return (
     <>
       <div className="d-flex">
-        <div className="w-25 bg-danger">
+        <div >
           <Sidebar />
         </div>
-        <div className="w-75 bg-info">
+        <div className="w-100 ">
           <Navbar />
-          <Header />
+       
           <Outlet />
         </div>
 

@@ -4,6 +4,9 @@ import { data, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { axiosInstance, USERS_URLS } from '../../Shared/baseUrl/baseUrl.js'
+import { CONFIRM_PASSWORD_VALIDTION, EMAIL_VALIDTION, PASSWORD_VALIDTION } from '../../Shared/Validtion/Validtion.js'
+
 export default function Forget_PassWord() {
   let baseUrl = `https://upskilling-egypt.com:3006`
   let [loding, setLoding] = useState(false)
@@ -17,7 +20,7 @@ export default function Forget_PassWord() {
   const onSubmit = async (data) => {
     try {
       setLoding(true)
-      let respons = await axios.post(`${baseUrl}/api/v1/Users/Reset/Request`, data)
+      let respons = await axiosInstance.post(USERS_URLS.FORGET_PASSWORD, data)
       if (respons.data.message === 'Your request is being processed, please check your email') {
         toast.success(`success,please check your email`)
         setLoding(false)
@@ -30,11 +33,11 @@ export default function Forget_PassWord() {
       setLoding(false)
     }
   }
-   // call ApiUpdate
+  // call ApiUpdate
   const onSubmitUpdate = async (data) => {
     try {
       setLoding(true)
-      let respons = await axios.post(`${baseUrl}/api/v1/Users/Reset`, data)
+      let respons = await axiosInstance.post(USERS_URLS.RESET_PASSWORD, data)
       console.log(respons);
 
       if (respons.data.message === 'Password has been updated successfully') {
@@ -77,12 +80,7 @@ export default function Forget_PassWord() {
                     {/* /email/ */}
                     <div className="input-group mt-3">
                       <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-envelope"></i></span>
-                      <input {...register('email', {
-                        required: 'email is require', pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: 'Email not vailed, please enter email valied'
-                        }
-                      })} type="mail" name='email' className="form-control input_email" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
+                      <input {...register('email', EMAIL_VALIDTION)} type="mail" name='email' className="form-control input_email" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
 
                     </div>
                     {errors.email && <span className='text-danger'>{errors.email.message}</span>}
@@ -117,13 +115,7 @@ export default function Forget_PassWord() {
                     {/* /email/ */}
                     <div className="input-group mt-3">
                       <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-envelope"></i></span>
-                      <input {...register('email', {
-                        required: 'email is require', pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: 'Email not vailed, please enter email valied'
-                        }
-                      })} type="mail" name='email' className="form-control input_height" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
-
+                      <input {...register('email', EMAIL_VALIDTION)} type="mail" name='email' className="form-control input_height" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
                     </div>
                     {errors.email && <span className='text-danger'>{errors.email.message}</span>}
                     {/* /OTP/ */}
@@ -138,12 +130,7 @@ export default function Forget_PassWord() {
                     {/* //password// */}
                     <div className="input-group mt-3 position-relative all_pass ">
                       <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-lock"></i></span>
-                      <input   {...register('password', {
-                        required: 'password is require', pattern: {
-                          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/,
-                          message: 'The password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character  '
-                        }
-                      })} type={show ? "text" : "password"} name='password' className="form-control input_height bord_pass" placeholder="Password" aria-label="password" aria-describedby="basic-addon1" />
+                      <input   {...register('password', PASSWORD_VALIDTION)} type={show ? "text" : "password"} name='password' className="form-control input_height bord_pass" placeholder="Password" aria-label="password" aria-describedby="basic-addon1" />
                       <span
                         className="position-absolute end-0 top-50 translate-middle-y pe-2 alleye rounded-3"
                         onClick={() => setShow((prev) => !prev)}
@@ -160,10 +147,7 @@ export default function Forget_PassWord() {
                     <div className="input-group mt-3 position-relative all_pass ">
                       <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-key"></i></span>
                       <input
-                        {...register('confirmPassword', {
-                          required: 'Please confirm your password',
-                          validate: (value) => value === watch('password') || 'Passwords do not match',
-                        })}
+                        {...register('confirmPassword', CONFIRM_PASSWORD_VALIDTION)}
                         type={show ? "text" : "password"} name='confirmPassword' className="form-control input_height bord_pass" placeholder="Confirm New Password" aria-label="password" aria-describedby="basic-addon1" />
                       <span
                         className="position-absolute end-0 top-50 translate-middle-y pe-2 alleye rounded-3"
