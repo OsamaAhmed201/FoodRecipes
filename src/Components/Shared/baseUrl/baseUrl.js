@@ -1,6 +1,8 @@
 import axios from "axios";
 
 let baseURL = `https://upskilling-egypt.com:3006/api/v1`
+export let baseIMG = `https://upskilling-egypt.com:3006/`
+
 
 export const axiosInstance = axios.create(
     { baseURL, headers: { Authorization: localStorage.getItem('token') } });
@@ -12,7 +14,12 @@ export const USERS_URLS = {
     REGISTER: `/Users/Register`,
     FORGET_PASSWORD: `/Users/Reset/Request`,
     RESET_PASSWORD: `/Users/Reset`,
-    VERIFY: `/Users/verify`
+    VERIFY: `/Users/verify`,
+    GET_ALL_USERS: `/Users/`,
+    GET_USER_BY_ID: (id) => `/Users/${id}`,
+    UPDATE_USER: (id) => `/Users/${id}`,
+    DELETE_USER: (id) => `/Users/${id}`,
+    CHANGE_PASSWORD: `/Users/ChangePassword`,
 }
 
 //////////CategoriesApi
@@ -23,3 +30,16 @@ export const CATEGORIES_URLS = {
     UPDATE_CATEGORY: (id) => `/Category/${id}`,
     DELETE_CATEGORY: (id) => `/Category/${id}`,
 }
+//////////RecipeApi
+export const RECIPES_URLS = {
+    ADD_RECIPE: `/Recipe/`,
+    GET_ALL_RECIPES: `/Recipe`,
+    GET_RECIPE_BY_ID: (id) => `/Recipe/${id}`,
+    UPDATE_RECIPE: (id) => `/Recipe/${id}`,
+    DELETE_RECIPE: (id) => `/Recipe/${id}`,
+}
+//////////TagsApi
+export const TAGS_URLS = {
+    GET_ALL_TAGS: `/tag/`,
+}
+

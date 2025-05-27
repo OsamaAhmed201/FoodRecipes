@@ -233,7 +233,7 @@
   border-radius: 20px;
 }
 
-.FillRecipes button {
+.link_fillRecipes {
   background-color: #009247;
   font-weight: 700;
   color: white;
@@ -243,8 +243,9 @@
   transition: 0.5s;
 }
 
-.FillRecipes button:hover {
+.link_fillRecipes:hover {
   background-color: #076535;
+  color: white;
 }
 
 .inerContiantDash h3 {
@@ -273,11 +274,21 @@
   color: white;
   font-weight: 700;
   transition: 0.5s;
+  white-space: nowrap;
 }
 
 .btnAdd_cate:hover {
   background-color: #076535;
 }
+
+@media (max-width: 576px) {
+  .all-btnAddRecipe {
+    padding: 8px 16px;
+    font-size: 14px;
+    text-align: center !important;
+  }
+}
+
 
 .Caegory_titel h3 {
   font-size: 20px;
@@ -356,4 +367,170 @@
 .detaliesCate span {
   font-size: 18px;
   font-weight: 400;
+}
+
+/* //////// */
+/* FormData_Recipes */
+.all_FormData {
+  background-color: #F0FFEF !important;
+  width: 98%;
+  border-radius: 20px;
+  margin-top: 15px;
+}
+
+.contantForm_Reciepes {
+  line-height: 24px;
+  letter-spacing: 4%;
+}
+
+.contantForm_Reciepes h2 {
+
+  color: #1F263E;
+}
+
+.contantForm_Reciepes span {
+  color: #009247;
+  font-size: 35px;
+  font-weight: 500;
+}
+
+.contantForm_Reciepes p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #1F263E;
+}
+
+.input_FormRecipes {
+  height: 35.9px;
+  border-radius: 8px;
+  border: 1px solid #009247;
+  background-color: #F7F7F7;
+}
+
+.input_FormRecipes:focus {
+  box-shadow: none;
+  border: 1px solid #009247;
+}
+
+.upload-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.upload-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 3px dashed #8dd18d;
+  background-color: #f3fff3;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.upload-label:hover {
+  background-color: #e9ffe9;
+}
+
+.upload-icon {
+  font-size: 24px;
+  margin-bottom: 0.5rem;
+  color: #4caf50;
+}
+
+.highlight {
+  color: #1b8a1b;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.RecipeHeader h3 {
+  font-size: 20px;
+  line-height: 100%;
+  font-weight: 500;
+}
+
+.RecipeHeader p {
+  font-size: 16px;
+  line-height: 100%;
+  font-weight: 400;
+}
+
+.img-productRecipe {
+  height: 56px;
+  width: 56px;
+  border-radius: 8px;
+}
+
+/* ////detaliesRecipce */
+.all_detaliesRecipce img {
+  width: 45%;
+  border-radius: 20px;
+}
+
+.title_detaliesRecipce span,
+.title_detaliesRecipce h4 {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.subtitle_detalies {
+
+  font-weight: 700;
+  font-size: 18px
+}
+
+.recipe_Resutel {
+  font-size: 16px;
+}
+/* ///notFoundPage */
+.notFoundPage{
+  background-image: url(../src/assets/Vector.png);
+  height: 100vh;
+  background-position: center center;
+  background-size: cover;
+  overflow: hidden;
+}
+.notFoundContant{
+top: 0px;
+bottom: 0px;
+left: 0px;
+right: 0px;
+}
+.notFoundContant h4{
+  font-size: 32px;
+  font-weight: 400;
+}
+.notFoundContant h2{
+  font-size: 40px;
+  font-weight: 700;
+}
+.btn_notFound{
+  border: none ;
+  border-radius: 8px;
+ font-weight: 700;  
+ margin-top: 20px;
+}
+.itemNotFound{
+  display: flex;
+  align-items: start !important;
+  justify-self: auto;
+}
+.pagination button{
+  border: none ;
+  border-radius: 8px;
+  font-weight: 500;
+  background-color:  #009247 ;
+  color: white ;
+  padding: 8px 20px !important;
+}
+.pagination span{
+
+ font-size: larger;
+  color:  #009247 !important;
 }

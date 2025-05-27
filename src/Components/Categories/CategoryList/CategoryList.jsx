@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import imgCategory from '../../../assets/category.svg'
 import Header from './../../Shared/Header/Header';
-
 import NoDataFound from '../../Shared/NoDataFound/NoDataFound.jsx';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -13,6 +12,10 @@ import { axiosInstance, CATEGORIES_URLS } from '../../Shared/baseUrl/baseUrl.js'
 
 
 export default function CategoryList() {
+  //pagination
+  const [page, setPage] = useState(1)
+  const limit = 7
+  //
   let { register, handleSubmit, formState: { errors }, reset, setValue } = useForm()
   let [btnLoad, setBtnLoad] = useState(false)
   let [lodingPage, setLodingPage] = useState(false)
@@ -39,12 +42,7 @@ export default function CategoryList() {
   async function getAllCategories() {
     setLodingPage(true)
     try {
-      let response = await axiosInstance.get(`${CATEGORIES_URLS.GET_ALL_CATEGORIES}?pageSize=5&pageNumber=1`,
-        {
-          headers: {
-            Authorization: localStorage.getItem('token')
-          }
-        })
+      let response = await axiosInstance.get(`${CATEGORIES_URLS.GET_ALL_CATEGORIES}?pageSize=${limit}&pageNumber=${page}`)
       setLodingPage(false)
       setCategoryLis(response.data.data);
     } catch (error) {
@@ -108,7 +106,7 @@ export default function CategoryList() {
 
   useEffect(() => {
     getAllCategories()
-  }, [])
+  }, [page])
   return (
     <>
 
@@ -246,6 +244,24 @@ export default function CategoryList() {
 
           </tbody>
         </table>
+      </div>
+      <div className="d-flex justify-content-center align-content-center py-3 pagination">
+        <button
+          onClick={() => setPage((old) => Math.max(old - 1, 1))}
+          disabled={page === 1}
+          className="px-4 py-2  rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span className="px-4 ">Page {page}</span>
+        <button
+          onClick={() => setPage((old) => old + 1)}
+          disabled={categoryLis.length < limit}
+          className="px-4  rounded disabled:opacity-50"  
+        >
+          Next
+        </button>
+
       </div>
     </>
   )

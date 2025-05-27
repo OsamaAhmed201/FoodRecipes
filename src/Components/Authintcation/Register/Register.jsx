@@ -9,7 +9,7 @@ import { CONFIRM_PASSWORD_VALIDTION, EMAIL_VALIDTION, PASSWORD_VALIDTION } from 
 export default function Register() {
   let [loding, setLoding] = useState(false)
   let navigate = useNavigate()
-  let { register, watch, handleSubmit, formState: { errors } } = useForm()
+  let { register, handleSubmit, formState: { errors } } = useForm()
   const [show, setShow] = useState(false)
 
 

@@ -19,6 +19,7 @@ import { ToastContainer } from "react-toastify";
 import AuthContextProvider from "./Components/Context/authContext/AuthContextProvider.jsx";
 import ProtectedRouting from "./Components/Shared/ProtectedRouting/ProtectedRouting.jsx";
 import FavoList from './Components/Favouruites/FavoList/FavoList';
+import ChangePassword from "./Components/Shared/ChangePassword/ChangePassword.jsx";
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
         { path: 'category-data', element: <CategoryData /> },
         { path: 'users', element: <UserList /> },
         { path: 'favouruites', element: <FavoList /> },
+        { path: 'change-password', element: <ChangePassword /> },
         
       ],
       errorElement: <Notfound />

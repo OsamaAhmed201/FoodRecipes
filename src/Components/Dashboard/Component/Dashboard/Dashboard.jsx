@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { AuthContext } from '../../../Context/authContext/AuthContextProvider.jsx'
 import HeaderImg from '../../../../assets/imgHeader.png'
 import Header from '../../../Shared/Header/Header.jsx'
+import { Link } from 'react-router-dom'
 
 export default function Dashboard() {
   let { LogData } = useContext(AuthContext)
@@ -20,9 +21,9 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="col-md-6 text-end">
-            <button>
+            <Link to="/dashboard/recipes-data" className="btn link_fillRecipes">
               Fill Recipes  <i className="fa-solid fa-right-long ms-1"></i>
-            </button>
+            </Link>
           </div>
         </div>
       </div>
