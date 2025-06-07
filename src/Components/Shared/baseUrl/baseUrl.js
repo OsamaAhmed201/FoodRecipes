@@ -9,18 +9,18 @@ export const axiosInstance = axios.create(
 
 //////////UserApi
 
-export const USERS_URLS = {
-    LOGIN: `/Users/Login`,
-    REGISTER: `/Users/Register`,
-    FORGET_PASSWORD: `/Users/Reset/Request`,
-    RESET_PASSWORD: `/Users/Reset`,
-    VERIFY: `/Users/verify`,
-    GET_ALL_USERS: `/Users/`,
-    GET_USER_BY_ID: (id) => `/Users/${id}`,
-    UPDATE_USER: (id) => `/Users/${id}`,
-    DELETE_USER: (id) => `/Users/${id}`,
-    CHANGE_PASSWORD: `/Users/ChangePassword`,
-}
+    export const USERS_URLS = {
+        LOGIN: `/Users/Login`,
+        REGISTER: `/Users/Register`,
+        FORGET_PASSWORD: `/Users/Reset/Request`,
+        RESET_PASSWORD: `/Users/Reset`,
+        VERIFY: `/Users/verify`,
+        GET_ALL_USERS: `/Users/`,
+        GET_USER_BY_ID: (id) => `/Users/${id}`,
+        UPDATE_USER: (id) => `/Users/${id}`,
+        DELETE_USER: (id) => `/Users/${id}`,
+        CHANGE_PASSWORD: `/Users/ChangePassword`,
+    }
 
 //////////CategoriesApi
 export const CATEGORIES_URLS = {

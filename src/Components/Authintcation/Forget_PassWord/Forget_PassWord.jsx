@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import logoimg from '../../../assets/foodRecipe.png'
 import { data, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { axiosInstance, USERS_URLS } from '../../Shared/baseUrl/baseUrl.js'
-import { CONFIRM_PASSWORD_VALIDTION, EMAIL_VALIDTION, PASSWORD_VALIDTION } from '../../Shared/Validtion/Validtion.js'
+import { EMAIL_VALIDTION, PASSWORD_VALIDTION } from '../../Shared/Validtion/Validtion.js'
 
 export default function Forget_PassWord() {
-  let baseUrl = `https://upskilling-egypt.com:3006`
+  let [userEmail, setUserEmail] = useState('')
   let [loding, setLoding] = useState(false)
   let navigate = useNavigate()
   let { register, watch, handleSubmit, formState: { errors } } = useForm()
@@ -23,6 +23,7 @@ export default function Forget_PassWord() {
       let respons = await axiosInstance.post(USERS_URLS.FORGET_PASSWORD, data)
       if (respons.data.message === 'Your request is being processed, please check your email') {
         toast.success(`success,please check your email`)
+        setUserEmail(respons.data.email)
         setLoding(false)
         setDisplayForm(false)
 
@@ -51,7 +52,12 @@ export default function Forget_PassWord() {
       setLoding(false)
     }
   }
+  useEffect(() => {
+    if (userEmail) {
+      setUserEmail('email', userEmail);
 
+    }
+  }, [userEmail, setUserEmail])
   return (
     <>
       {loding && (
@@ -115,7 +121,8 @@ export default function Forget_PassWord() {
                     {/* /email/ */}
                     <div className="input-group mt-3">
                       <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-envelope"></i></span>
-                      <input {...register('email', EMAIL_VALIDTION)} type="mail" name='email' className="form-control input_height" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
+                      <input {...register('email', EMAIL_VALIDTION)} type="mail" name='email' value={userEmail}
+                        readOnly className="form-control input_height" placeholder="Enter your E-mail" aria-label="email" aria-describedby="basic-addon1" />
                     </div>
                     {errors.email && <span className='text-danger'>{errors.email.message}</span>}
                     {/* /OTP/ */}
@@ -147,7 +154,14 @@ export default function Forget_PassWord() {
                     <div className="input-group mt-3 position-relative all_pass ">
                       <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-key"></i></span>
                       <input
-                        {...register('confirmPassword', CONFIRM_PASSWORD_VALIDTION)}
+                        {...register('confirmPassword', {
+                          required: 'confirmPassword is require',
+                          validate: (val) => {
+                            if (watch('password') !== val) {
+                              return "Your passwords don't match"
+                            }
+                          }
+                        })}
                         type={show ? "text" : "password"} name='confirmPassword' className="form-control input_height bord_pass" placeholder="Confirm New Password" aria-label="password" aria-describedby="basic-addon1" />
                       <span
                         className="position-absolute end-0 top-50 translate-middle-y pe-2 alleye rounded-3"

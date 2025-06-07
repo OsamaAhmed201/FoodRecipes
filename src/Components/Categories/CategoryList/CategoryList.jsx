@@ -5,7 +5,7 @@ import NoDataFound from '../../Shared/NoDataFound/NoDataFound.jsx';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import DeleteItim from '../../Shared/DeleteItim/DeleteItim.jsx';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify'
 import CategoryData from '../CategoryData/CategoryData.jsx';
 import { axiosInstance, CATEGORIES_URLS } from '../../Shared/baseUrl/baseUrl.js';
@@ -14,12 +14,16 @@ import { axiosInstance, CATEGORIES_URLS } from '../../Shared/baseUrl/baseUrl.js'
 export default function CategoryList() {
   //pagination
   const [page, setPage] = useState(1)
-  const limit = 7
+  const limit = 6
   //
   let { register, handleSubmit, formState: { errors }, reset, setValue } = useForm()
   let [btnLoad, setBtnLoad] = useState(false)
   let [lodingPage, setLodingPage] = useState(false)
   const [cateId, setCateId] = useState(0)
+  const [numPage, setNumPage] = useState([])
+  const [nameValue, setNameValue] = useState('');
+
+
   // delete
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -33,17 +37,19 @@ export default function CategoryList() {
   const [editId, setEditId] = useState(null);
 
   //ViewCategory
+  const [showDataView, setshowDataView] = useState("");
   const [showView, setShowView] = useState(false);
   const handleCloseView = () => setShowView(false);
-  const handleShowView = (id) => { setShowView(true), setCateId(id), viewCategory(id) };
-  const [showDataView, setshowDataView] = useState("");
+  const handleShowView = (id) => { setShowView(true), setCateId(id), viewCategory(id), setshowDataView(null) };
+
   let [categoryLis, setCategoryLis] = useState([])
   //Fun getAllCate
-  async function getAllCategories() {
+  async function getAllCategories(searchText = '') {
     setLodingPage(true)
     try {
-      let response = await axiosInstance.get(`${CATEGORIES_URLS.GET_ALL_CATEGORIES}?pageSize=${limit}&pageNumber=${page}`)
+      let response = await axiosInstance.get(`${CATEGORIES_URLS.GET_ALL_CATEGORIES}?pageSize=${limit}&pageNumber=${page}&name=${searchText}`)
       setLodingPage(false)
+      setNumPage(Array(response.data.totalNumberOfPages).fill().map((_, index) => index + 1))
       setCategoryLis(response.data.data);
     } catch (error) {
       toast.error(error.data);
@@ -73,11 +79,11 @@ export default function CategoryList() {
       getAllCategories()
       handleCloseAdd()
       reset()
-      toast.success(`Category added successfully.`)
+      toast.success(respons?.data?.message || `Category added successfully.`)
 
     }
     catch (error) {
-      toast.error(error)
+      toast.error(error.response?.data?.message || "Something went wrong");
       setBtnLoad(false)
     }
 
@@ -89,24 +95,33 @@ export default function CategoryList() {
   }
   //editCategory
   async function editCategory(data) {
-
+    setBtnLoad(true)
     try {
       let response = await axiosInstance.put(CATEGORIES_URLS.UPDATE_CATEGORY(editId), data)
+      setBtnLoad(false)
+
       getAllCategories()
       reset()
       handleCloseAdd()
-      toast.success(`Category updetecd successfully.`)
+      toast.success(response?.data?.message || `Category updeted successfully.`)
     }
 
     catch (errer) {
-      console.log(errer);
-
+      toast.error(errer.response?.data?.message || "Something went wrong");
+      setBtnLoad(false)
     }
+  }
+  // search
+  async function setSearch(data) {
+    setNameValue(data);
+    setPage(1);
   }
 
   useEffect(() => {
-    getAllCategories()
-  }, [page])
+    getAllCategories(nameValue)
+
+
+  }, [page,nameValue])
   return (
     <>
 
@@ -134,7 +149,10 @@ export default function CategoryList() {
           <i class="fa-solid fa-align-left me-3"></i> Category Details
         </Modal.Header>
         <Modal.Body>
-          {<CategoryData id={showDataView?.id} name={showDataView?.name} Date={<span>{showDataView?.creationDate ? showDataView.creationDate.split("T")[0] : "No date"}</span>} />}
+          {showDataView ? <CategoryData id={showDataView?.id} name={showDataView?.name} Date={<span>{showDataView?.creationDate ? showDataView.creationDate.split("T")[0] : "No date"}</span>} /> :
+            (<div className=" d-flex justify-content-center">
+              <i className='fa fa-spinner fa-spin'></i>
+            </div>)}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="" className='icon_delete btn-outline-danger' onClick={handleCloseView}>
@@ -158,7 +176,7 @@ export default function CategoryList() {
 
             </div>
             {errors.name && <span className='text-danger p-3  '>{errors.name.message}</span>}
-            <Button type='submit' className='icon_Add_Cate float-end' onClick={() => { addCategory() }} variant=" btn-success">
+            <Button type='submit' className='icon_Add_Cate float-end' variant=" btn-success">
               {btnLoad ? <i className='fa fa-spinner fa-spin'></i> : (typeModle === 'edit' ? 'Update' : 'Save')}
             </Button>
           </form>
@@ -180,6 +198,9 @@ export default function CategoryList() {
           }} className='btnAdd_cate'>Add New Category</button>
         </div>
       </div>
+      <div className="">
+        <input className='form-control w-50 ms-5 my-4' type="text" placeholder='Search by name' onChange={(e) => setSearch(e.target.value)} />
+      </div>
       <div className="container table-responsive">
         <table className="table table-striped table-hover ">
           <thead className='text-center'>
@@ -195,8 +216,8 @@ export default function CategoryList() {
           <tr>
             <td colSpan="4">
               {lodingPage && (
-                <div className="d-flex justify-content-center align-items-center vh-50 bg_loadCategory">
-                  <span class="loader"></span>
+                <div className="d-flex justify-content-center align-items-start pt-5 vh-50 bg_loadCategory">
+                  <span class="loader mt-5"></span>
                 </div>
               )}
             </td>
@@ -245,24 +266,75 @@ export default function CategoryList() {
           </tbody>
         </table>
       </div>
-      <div className="d-flex justify-content-center align-content-center py-3 pagination">
-        <button
-          onClick={() => setPage((old) => Math.max(old - 1, 1))}
-          disabled={page === 1}
-          className="px-4 py-2  rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <span className="px-4 ">Page {page}</span>
-        <button
-          onClick={() => setPage((old) => old + 1)}
-          disabled={categoryLis.length < limit}
-          className="px-4  rounded disabled:opacity-50"  
-        >
-          Next
-        </button>
+
+      {/* pagination */}
+      <div className="d-flex justify-content-center">
+         <ul className="pagination">
+
+          <li
+            onClick={() => setPage((old) => Math.max(old - 1, 1))}
+            className={`page-item ${page === 1 ? 'disabled' : ''}`}
+          >
+            <a className="page-link" href="#">Previous</a>
+          </li>
+
+          {/* First page always */}
+          <li onClick={() => setPage(1)} className={`page-item ${page === 1 ? 'active' : ''}`}>
+            <a className="page-link" >1</a>
+          </li>
+
+          {/* Dots before current range */}
+          {page > 3 && numPage.length > 5 && (
+            <li
+              className="page-item"
+              style={{ cursor: 'pointer' }}
+              onClick={() => setPage(Math.max(1, page - 2))}
+            >
+              <span className="page-link">...</span>
+            </li>
+          )}
+
+          {/* Middle pages */}
+          {numPage
+            .filter(i => i !== 1 && i !== numPage.length)
+            .filter(i => i >= page - 1 && i <= page + 1)
+            .map(i => (
+              <li key={i} onClick={() => setPage(i)} className={`page-item ${page === i ? 'active' : ''}`}>
+                <a className="page-link" href="#">{i}</a>
+              </li>
+            ))
+          }
+
+          {/* Dots after current range */}
+          {page < numPage.length - 2 && numPage.length > 5 && (
+            <li
+              className="page-item"
+              style={{ cursor: 'pointer' }}
+              onClick={() => setPage(Math.min(numPage.length, page + 2))}
+            >
+              <span className="page-link">...</span>
+            </li>
+          )}
+          {/* Last page always */}
+          {numPage.length > 1 && (
+            <li onClick={() => setPage(numPage.length)} className={`page-item ${page === numPage.length ? 'active' : ''}`}>
+              <a className="page-link" href="#">{numPage.length}</a>
+            </li>
+          )}
+
+          <li
+            onClick={() => setPage((old) => Math.min(old + 1, numPage.length))}
+            className={`page-item ${page === numPage.length ? 'disabled' : ''}`}
+          >
+            <a className="page-link" href="#">Next</a>
+          </li>
+        </ul>
 
       </div>
+
+
+
+     
     </>
   )
 }

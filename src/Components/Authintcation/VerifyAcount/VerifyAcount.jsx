@@ -2,16 +2,16 @@ import React, { useState } from 'react'
 import logoimg from '../../../assets/foodRecipe.png'
 import { data, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
+
 import { toast } from 'react-toastify'
-import { axiosInstance } from '../../Shared/baseUrl/baseUrl.js'
+import { axiosInstance, USERS_URLS } from '../../Shared/baseUrl/baseUrl.js'
 import { EMAIL_VALIDTION } from './../../Shared/Validtion/Validtion';
 export default function VerifyAcount() {
 
   let [loding, setLoding] = useState(false)
   let navigate = useNavigate()
   let { register, watch, handleSubmit, formState: { errors } } = useForm()
-  const [show, setShow] = useState(false)
+ 
   const [dispalyForm, setDisplayForm] = useState(true)
 
 

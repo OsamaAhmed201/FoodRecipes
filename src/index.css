@@ -86,7 +86,7 @@
 
 .bg_loadCategory {
   background-image: linear-gradient(120deg, #f3f2f2 0%, #a5fa96 100%);
-  height: 50vh;
+  height: 100vh;
 }
 
 .alleye {
@@ -533,4 +533,47 @@ right: 0px;
 
  font-size: larger;
   color:  #009247 !important;
+}
+.fa-eye{
+  cursor: pointer;
+  color: rgb(154, 154, 244);
+}
+.fa-trash{
+  cursor: pointer;
+  color: rgb(182, 53, 53);
+}
+.fa-pen-to-square{
+  cursor: pointer;
+  color: rgb(43, 195, 119);
+}
+.pagination a{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #009247 !important;
+}
+.pagination a:hover{
+  background-color: #aaa5a5!important;
+  color: white !important;
+}
+.pagination :focus{
+  background-color: #009247 !important;
+  color: white !important;
+  
+}
+.page-link{
+  color: #009247 !important;
+height: 40px;
+
+} 
+.page-item.active .page-link{
+  background-color: #009247 !important;
+  color: white !important;
+}
+ .page-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+  cursor: pointer;
 }

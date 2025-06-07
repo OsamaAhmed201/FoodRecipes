@@ -10,7 +10,6 @@ export default function AuthContextProvider({ children }) {
 
     if (TokenStorge) {
       setToken(TokenStorge)
-  
       setLogData(jwtDecode(TokenStorge))
     }
 

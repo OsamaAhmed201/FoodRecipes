@@ -14,9 +14,15 @@ import DetaliesView from '../DetaliesUser/DetaliesView.jsx';
 
 
 export default function UserList() {
+  //pagination
   const [page, setPage] = useState(1)
-  const limit = 7
+  const limit = 6
+  const [numPage, setNumPage] = useState([])
+  const [nameValue, setNameValue] = useState('');
+  const [roleValue, setRoleValue] = useState('');
 
+
+  //
   let [lodingPage, setLodingPage] = useState(false)
   let [btnLoad, setBtnLoad] = useState(false)
   let [users, setUsers] = useState([])
@@ -33,10 +39,12 @@ export default function UserList() {
   const [showDataView, setshowDataView] = useState("");
 
   // funGetUsers
-  async function getAllUsers() {
+  async function getAllUsers(searchText = '', roleValue = '') {
     setLodingPage(true)
     try {
-      let response = await axiosInstance.get(`${USERS_URLS.GET_ALL_USERS}?pageSize=${limit}&pageNumber=${page}`)
+      let response = await axiosInstance.get(`${USERS_URLS.GET_ALL_USERS}?pageSize=${limit}&pageNumber=${page}&userName=${searchText}&groups=${roleValue}`)
+      console.log(response.data.data);
+      setNumPage(Array(response.data.totalNumberOfPages).fill().map((_, index) => index + 1))
       setLodingPage(false)
       setUsers(response.data.data);
     } catch (error) {
@@ -65,6 +73,7 @@ export default function UserList() {
 
       if (errorMessage.toLowerCase().includes("admin")) {
         toast.error(error?.response?.data?.message);
+
       } else {
         toast.error(errorMessage);
       }
@@ -85,11 +94,23 @@ export default function UserList() {
       setBtnLoad(false)
     }
   }
+  async function setSearch(data) {
+    setNameValue(data);
+    setPage(1);
+  }
 
+  const getRoleValue = (data) => {
+    setRoleValue(data);
+    setPage(1);
+  }
 
   useEffect(() => {
-    getAllUsers()
-  }, [page])
+    getAllUsers(nameValue, roleValue);
+  }, [page, nameValue, roleValue])
+  const roleOptions = [
+    { id: 1, name: 'Admin' },
+    { id: 2, name: 'User' },
+  ];
   return (
     <>
       <Modal show={showView} onHide={handleCloseView} animation={false}>
@@ -99,7 +120,7 @@ export default function UserList() {
         <Modal.Body>
           {showDataView ? <DetaliesView userName={showDataView?.userName} email={showDataView?.email} country={showDataView?.country} phoneNumber={showDataView?.phoneNumber} role={showDataView?.group?.name} imguser={showDataView?.imagePath ? `${baseIMG}${showDataView.imagePath}` : defaultImg} /> : (
             <div className=" d-flex justify-content-center">
-              <i class="fa-solid fa-spinner"></i>
+              <i className='fa fa-spinner fa-spin'></i>
             </div>
           )}
 
@@ -143,28 +164,23 @@ export default function UserList() {
         <div className="row">
           <div className="col-md-6">
             <div className="input-group mb-3">
-              <span className="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
-              <input type="text" className="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1" />
+              <span className="input-group-text input_FormRecipes" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input onChange={(e) => setSearch(e.target.value)} type="text" className="form-control input_FormRecipes" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1" />
             </div>
           </div>
           <div className="col-md-3">
             <div className="input-group mb-3">
-              <select className="form-select" id="inputGroupSelect01" placeholder='Tag'>
-                <option value={1}>One</option>
-                <option value={2}>Two</option>
-                <option value={3}>Three</option>
+              <select onChange={(e) => getRoleValue(e.target.value)} className='form-control input_FormRecipes'>
+                <option value="">Select Role</option>
+                {roleOptions.map((role) => (
+                  <option key={role.id} value={role.id}>{role.name}</option>
+                ))}
               </select>
+
+
             </div>
           </div>
-          <div className="col-md-3">
-            <div className="input-group mb-3">
-              <select className="form-select" id="inputGroupSelect01" placeholder='Category'>
-                <option value={1}>One</option>
-                <option value={2}>Two</option>
-                <option value={3}>Three</option>
-              </select>
-            </div>
-          </div>
+
         </div>
       </div>
       <div className="container table-responsive">
@@ -175,7 +191,7 @@ export default function UserList() {
               <th scope="col"> User Name </th>
               <th scope="col">Image</th>
               <th scope="col">Email</th>
-              <th scope="col">country</th>
+              <th scope="col">Role</th>
               <th scope="col">Phone</th>
               <th scope="col">Action</th>
 
@@ -186,8 +202,8 @@ export default function UserList() {
           <tr>
             <td colSpan="7">
               {lodingPage && (
-                <div className="d-flex justify-content-center align-items-center vh-50 bg_loadCategory">
-                  <span class="loader"></span>
+                <div className="d-flex justify-content-center align-items-start pt-5 vh-50 bg_loadCategory">
+                  <span class="loader mt-5"></span>
                 </div>
               )}
             </td>
@@ -200,7 +216,7 @@ export default function UserList() {
                 <td>{i.userName}</td>
                 <td>{i.imagePath ? <img className='img-productRecipe' src={`${baseIMG}/${i.imagePath}`} alt="img_Recipe" /> : <img className='img-productRecipe' src={defaultImg} alt="img_Recipe" />} </td>
                 <td>{i.email}</td>
-                <td>{i.country}</td>
+                <td>{i.group.name === 'SuperAdmin' ? 'Admin' : i.group.name === 'SystemUser' ? 'User' : i.group.name}</td>
                 <td>{i.phoneNumber}</td>
 
                 <td>
@@ -234,24 +250,71 @@ export default function UserList() {
           </tbody>
         </table>
       </div>
-      <div className="d-flex justify-content-center align-content-center py-3 pagination">
-        <button
-          onClick={() => setPage((old) => Math.max(old - 1, 1))}
-          disabled={page === 1}
-          className="px-4 py-1   rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <span className="px-4 py-2">Page {page}</span>
-        <button
-          onClick={() => setPage((old) => old + 1)}
-          disabled={users.length < limit}
-          className="px-4 py-1   rounded disabled:opacity-50"
-        >
-          Next
-        </button>
-        
+
+      <div className="d-flex justify-content-center">
+        <ul className="pagination">
+
+          <li
+            onClick={() => setPage((old) => Math.max(old - 1, 1))}
+            className={`page-item ${page === 1 ? 'disabled' : ''}`}
+          >
+            <a className="page-link" href="#">Previous</a>
+          </li>
+
+          {/* First page always */}
+          <li onClick={() => setPage(1)} className={`page-item ${page === 1 ? 'active' : ''}`}>
+            <a className="page-link" >1</a>
+          </li>
+
+          {/* Dots before current range */}
+          {page > 3 && numPage.length > 5 && (
+            <li
+              className="page-item"
+              style={{ cursor: 'pointer' }}
+              onClick={() => setPage(Math.max(1, page - 2))}
+            >
+              <span className="page-link">...</span>
+            </li>
+          )}
+
+          {/* Middle pages */}
+          {numPage
+            .filter(i => i !== 1 && i !== numPage.length)
+            .filter(i => i >= page - 1 && i <= page + 1)
+            .map(i => (
+              <li key={i} onClick={() => setPage(i)} className={`page-item ${page === i ? 'active' : ''}`}>
+                <a className="page-link" href="#">{i}</a>
+              </li>
+            ))
+          }
+
+          {/* Dots after current range */}
+          {page < numPage.length - 2 && numPage.length > 5 && (
+            <li
+              className="page-item"
+              style={{ cursor: 'pointer' }}
+              onClick={() => setPage(Math.min(numPage.length, page + 2))}
+            >
+              <span className="page-link">...</span>
+            </li>
+          )}
+          {/* Last page always */}
+          {numPage.length > 1 && (
+            <li onClick={() => setPage(numPage.length)} className={`page-item ${page === numPage.length ? 'active' : ''}`}>
+              <a className="page-link" href="#">{numPage.length}</a>
+            </li>
+          )}
+
+          <li
+            onClick={() => setPage((old) => Math.min(old + 1, numPage.length))}
+            className={`page-item ${page === numPage.length ? 'disabled' : ''}`}
+          >
+            <a className="page-link" href="#">Next</a>
+          </li>
+        </ul>
+
       </div>
+
     </>
   )
 }

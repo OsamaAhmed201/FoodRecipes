@@ -32,8 +32,8 @@ export default function ChangePassword() {
             <div className="w-75 m-auto">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group mt-3 position-relative all_pass ">
-                        <span className="input-group-text" id="basic-addon1"><i class="fa-solid fa-lock"></i></span>
-                        <input   {...register('oldPassword', PASSWORD_VALIDTION)} type={show ? "text" : "password"} name='oldPassword' className="form-control input_email input_height bord_pass" placeholder="oldPassword" aria-label="oldPassword" aria-describedby="basic-addon1" />
+                        <span className="input-group-text input_FormRecipes" id="basic-addon1"><i class="fa-solid fa-lock"></i></span>
+                        <input   {...register('oldPassword', PASSWORD_VALIDTION)} type={show ? "text" : "password"} name='oldPassword' className="input_FormRecipes form-control input_email input_height bord_pass" placeholder="oldPassword" aria-label="oldPassword" aria-describedby="basic-addon1" />
                         <span
                             className="position-absolute end-0 top-50 translate-middle-y pe-2 alleye rounded-3"
                             onClick={() => setShow((prev) => !prev)}
@@ -48,8 +48,8 @@ export default function ChangePassword() {
                     {errors.oldPassword && <span className='text-danger'>{errors.oldPassword.message}</span>}
 
                     <div className="input-group mt-3 position-relative all_pass ">
-                        <span className="input-group-text" id="basic-addon1"><i class="fa-solid fa-lock"></i></span>
-                        <input   {...register('newPassword', NEW_PASSWORD_VALIDTION)} type={show ? "text" : "password"} name='newPassword' className="form-control input_email input_height bord_pass" placeholder="newPassword" aria-label="newPassword" aria-describedby="basic-addon1" />
+                        <span className="input_FormRecipes input-group-text" id="basic-addon1"><i class="fa-solid fa-lock"></i></span>
+                        <input   {...register('newPassword', NEW_PASSWORD_VALIDTION)} type={show ? "text" : "password"} name='newPassword' className="input_FormRecipes form-control input_email input_height bord_pass" placeholder="newPassword" aria-label="newPassword" aria-describedby="basic-addon1" />
                         <span
                             className="position-absolute end-0 top-50 translate-middle-y pe-2 alleye rounded-3"
                             onClick={() => setShow((prev) => !prev)}
@@ -65,7 +65,7 @@ export default function ChangePassword() {
 
                     <div >
                         <div className="input-group mt-3 position-relative all_pass ">
-                            <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-key"></i></span>
+                            <span className="input_FormRecipes input-group-text" id="basic-addon1"><i className="fa-solid fa-key"></i></span>
                             <input
                                 {...register("confirmNewPassword", {
                                     required: "Please confirm your new password",
@@ -73,8 +73,8 @@ export default function ChangePassword() {
                                         value === watch("newPassword") || "Passwords do not match",
                                 })}
                                 type={show ? "text" : "password"}
-                                name="confirmNewPassword" // ✅ مهم جدًا
-                                className="form-control input_height bord_pass"
+                                name="confirmNewPassword" 
+                                className="input_FormRecipes form-control input_height bord_pass"
                                 placeholder="Confirm New Password"
                             />
 

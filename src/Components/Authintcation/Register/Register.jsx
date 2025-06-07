@@ -2,19 +2,20 @@ import React, { useState } from 'react'
 import logoimg from '../../../assets/foodRecipe.png'
 import { data, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
 import { toast } from 'react-toastify'
-import { axiosInstance } from '../../Shared/baseUrl/baseUrl.js'
-import { CONFIRM_PASSWORD_VALIDTION, EMAIL_VALIDTION, PASSWORD_VALIDTION } from '../../Shared/Validtion/Validtion.js'
+import { axiosInstance, USERS_URLS } from '../../Shared/baseUrl/baseUrl.js'
+import {  EMAIL_VALIDTION, PASSWORD_VALIDTION } from '../../Shared/Validtion/Validtion.js'
 export default function Register() {
   let [loding, setLoding] = useState(false)
   let navigate = useNavigate()
-  let { register, handleSubmit, formState: { errors } } = useForm()
+  let { register, handleSubmit, formState: { errors } ,watch} = useForm()
   const [show, setShow] = useState(false)
 
 
   // call ApiForget
   const onSubmit = async (data) => {
+    console.log(data);
+    
     try {
       setLoding(true)
       let respons = await axiosInstance.post(USERS_URLS.REGISTER, data)
@@ -38,7 +39,7 @@ export default function Register() {
   return (
     <>
       {loding && (
-        <div className="d-flex justify-content-center bg_load">
+        <div className="d-flex justify-content-center align-items-center vh-100 bg_load">
           <div className="loader"></div>
         </div>
       )}
@@ -126,7 +127,14 @@ export default function Register() {
                       <div className="input-group mt-3 position-relative all_pass ">
                         <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-key"></i></span>
                         <input
-                          {...register('confirmPassword',CONFIRM_PASSWORD_VALIDTION)}
+                          {...register('confirmPassword', {
+                            required: 'confirmPassword is require',
+                            validate: (val) => {
+                              if (watch('password') !== val) {
+                                return "Your passwords do no match"
+                              }
+                            }
+                          })}
                           type={show ? "text" : "password"} name='confirmPassword' className="form-control input_height bord_pass" placeholder="Confirm-Password" aria-label="password" aria-describedby="basic-addon1" />
                         <span
                           className="position-absolute end-0 top-50 translate-middle-y pe-2 alleye rounded-3"

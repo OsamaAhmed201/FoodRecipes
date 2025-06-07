@@ -59,7 +59,7 @@ export default function ReciepesFormDate() {
       } else {
         let response = await axiosInstance.post(`${RECIPES_URLS.ADD_RECIPE}`, recpectRecipe)
         setBtnLoad(false)
-        toast.success(response?.data?.message)
+        toast.success(response?.data?.message||"recipe added successfully.")
       }
       navigate('/dashboard/recipes')
     }
@@ -116,7 +116,7 @@ export default function ReciepesFormDate() {
           {errors.tagId && <span className='text-danger p-3  '>{errors.tagId.message}</span>}
           {/* //price */}
 
-          <input {...register("price", { required: 'field is required' })} type="text" className='form-control input_FormRecipes my-3' placeholder='Price' />
+          <input {...register("price", { required: 'field is required' })} min={0} type="number" className='form-control input_FormRecipes my-3' placeholder='Price' />
           {errors.price && <span className='text-danger p-3  '>{errors.price.message}</span>}
           {/* //categoriesIds */}
           <select {...register("categoriesIds", { required: 'field is required' })} type="text" className='form-control input_FormRecipes my-3' placeholder='category' >

@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import logo from '../../../assets/logo-dash.png'
 import { AuthContext } from '../../Context/authContext/AuthContextProvider.jsx';
+import { jwtDecode } from 'jwt-decode';
 export default function SideBar() {
-  let { setToken } = useContext(AuthContext)
+  let { setToken, token } = useContext(AuthContext)
   let [iscollapse, setIsCollapse] = useState(false)
   let btnCollapse = () => {
     setIsCollapse(!iscollapse)
@@ -17,6 +18,9 @@ export default function SideBar() {
     setToken(null)
     navigate("/login")
   }
+
+  
+
 
   return (
     <>
@@ -32,7 +36,7 @@ export default function SideBar() {
             <MenuItem icon={<i className="fa-solid fa-unlock-keyhole"></i>} component={<Link to="/dashboard/change-password" />}>  Change Password </MenuItem>
             <MenuItem onClick={() => { logOut() }} icon={<i className="fa-solid fa-right-from-bracket"></i>}> Logout </MenuItem>
 
-          </Menu>     
+          </Menu>
         </Sidebar>;
       </div>
 

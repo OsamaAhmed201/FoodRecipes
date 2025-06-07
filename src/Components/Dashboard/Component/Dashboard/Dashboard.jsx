@@ -21,7 +21,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="col-md-6 text-end">
-            <Link to="/dashboard/recipes-data" className="btn link_fillRecipes">
+            <Link to="/dashboard/recipes" className="btn link_fillRecipes">
               Fill Recipes  <i className="fa-solid fa-right-long ms-1"></i>
             </Link>
           </div>
