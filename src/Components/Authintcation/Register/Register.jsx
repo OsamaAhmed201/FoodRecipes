@@ -36,14 +36,11 @@ export default function Register() {
 
   return (
     <>
-      {loding && (
+      {loding ? (
         <div className="d-flex justify-content-center align-items-center vh-100 bg_load">
           <div className="loader"></div>
         </div>
-      )}
-
-
-      <div className='All_AuthContant'>
+      ):<div className='All_AuthContant'>
         <div className="container-fluid overlay">
           <div className="row vh-100 justify-content-center align-items-center">
             <div className="col-md-7 bg-white  rounded-3 py-5 px-3">
@@ -158,12 +155,7 @@ export default function Register() {
           </div>
         </div>
 
-      </div>
-
-
-
-
-
+      </div>}
 
     </>
 

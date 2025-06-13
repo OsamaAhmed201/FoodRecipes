@@ -38,14 +38,11 @@ export default function VerifyAcount() {
 
   return (
     <>
-      {loding && (
+      {loding ? (
         <div className="d-flex justify-content-center align-items-center vh-100 bg_load">
           <div className="loader"></div>
         </div>
-      )}
-
-
-      <div className='All_AuthContant'>
+      ):  <div className='All_AuthContant'>
         <div className="container-fluid overlay">
           <div className="row vh-100 justify-content-center align-items-center">
             <div className="col-md-6 bg-white  rounded-3 py-5 px-5">
@@ -85,7 +82,10 @@ export default function VerifyAcount() {
           </div>
         </div>
 
-      </div>
+      </div>}
+
+
+    
 
     </>
 

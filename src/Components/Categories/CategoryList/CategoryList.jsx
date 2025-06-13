@@ -207,7 +207,7 @@ let navigate=useNavigate()
         </div>
 
       </div>
-      <div className="">
+      <div>
         <input className='form-control w-50 ms-5 my-4' type="text" placeholder='Search by name' onChange={(e) => setSearch(e.target.value)} />
       </div>
       <div className="container table-responsive">
@@ -224,11 +224,11 @@ let navigate=useNavigate()
 
           <tr>
             <td colSpan="4">
-              {lodingPage && (
+              {lodingPage ? (
                 <div className="d-flex justify-content-center align-items-start pt-5 vh-50 bg_loadCategory">
                   <span class="loader mt-5"></span>
                 </div>
-              )}
+              ):""}
             </td>
           </tr>
           <tbody className='text-center' >
