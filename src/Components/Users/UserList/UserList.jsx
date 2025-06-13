@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from './../../Shared/Header/Header';
 import imgUser from '../../../assets/category.svg'
 import NoDataFound from '../../Shared/NoDataFound/NoDataFound.jsx';
@@ -9,11 +9,19 @@ import { Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import DeleteItim from '../../Shared/DeleteItim/DeleteItim.jsx';
 import DetaliesView from '../DetaliesUser/DetaliesView.jsx';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Context/authContext/AuthContextProvider.jsx';
 
 
 
 
 export default function UserList() {
+  let navigate=useNavigate()
+    let { LogData } = useContext(AuthContext)
+    let role = LogData?.userGroup
+    if (role ==="SystemUser") {
+      navigate('/dashboard')
+    }
   //pagination
   const [page, setPage] = useState(1)
   const limit = 6

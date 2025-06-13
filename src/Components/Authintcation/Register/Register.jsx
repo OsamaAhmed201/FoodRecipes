@@ -14,8 +14,6 @@ export default function Register() {
 
   // call ApiForget
   const onSubmit = async (data) => {
-    console.log(data);
-    
     try {
       setLoding(true)
       let respons = await axiosInstance.post(USERS_URLS.REGISTER, data)

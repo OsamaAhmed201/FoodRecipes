@@ -2,7 +2,15 @@ import React, { useContext } from 'react'
 import imguser from '../../../assets/img_User.png'
 import Dropdown from 'react-bootstrap/Dropdown';
 import { AuthContext } from '../../Context/authContext/AuthContextProvider.jsx';
+import { Link, useNavigate } from 'react-router-dom';
 export default function Navbar() {
+  let {  setToken } = useContext(AuthContext)
+  let navigate = useNavigate()
+  function logOut() {
+    localStorage.removeItem("token")
+    setToken(null)
+    navigate("/login")
+  }
   let { LogData } = useContext(AuthContext)
   let userName = (LogData)
 
@@ -17,9 +25,9 @@ export default function Navbar() {
               <i class="fa-solid fa-play"></i>
             </button>
             <ul className="dropdown-menu">
-              <li><a className="dropdown-item" href="#">P</a></li>
-              <li><a className="dropdown-item" href="#">Another action</a></li>
-              <li><a className="dropdown-item" href="#">Something else here</a></li>
+              <li><Link className="dropdown-item" to="/dashboard/personal_data"> <i class="fa-solid fa-pen-to-square"></i>  Personal Data</Link></li>
+              <li><Link className="dropdown-item" to="/dashboard/change-password"> <i className="fa-solid fa-unlock-keyhole text-info "></i> Change Password</Link></li>
+              <li><Link onClick={() => { logOut() }} className="dropdown-item" ><i className="fa-solid fa-right-from-bracket text-danger"></i> Logout</Link></li>
             </ul>
           </span>
 

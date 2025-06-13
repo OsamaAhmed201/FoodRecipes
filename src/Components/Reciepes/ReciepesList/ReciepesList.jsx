@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../../Shared/Header/Header.jsx'
 import imgRespice from '../../../assets/category.svg'
 import { Link, useNavigate } from 'react-router-dom'
-import { axiosInstance, baseIMG, CATEGORIES_URLS, RECIPES_URLS, TAGS_URLS } from '../../Shared/baseUrl/baseUrl.js'
+import { axiosInstance, baseIMG, CATEGORIES_URLS, FAVS_URLS, RECIPES_URLS, TAGS_URLS } from '../../Shared/baseUrl/baseUrl.js'
 import { toast } from 'react-toastify'
 import NoDataFound from '../../Shared/NoDataFound/NoDataFound.jsx'
 import defaultImg from '../../../assets/borger.jpg'
@@ -10,9 +10,21 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import DeleteItim from '../../Shared/DeleteItim/DeleteItim.jsx';
 import DetaliesRecipce from '../DetaliesRecipce/DetaliesRecipce.jsx'
+import { AuthContext } from '../../Context/authContext/AuthContextProvider.jsx'
 
 
 export default function ReciepesList() {
+  let [imgFavs, setImgFavs] = useState(defaultImg)
+  let { LogData } = useContext(AuthContext)
+  let role = LogData?.userGroup;
+
+  //addRecipe
+  const [showAdd, setShowAdd] = useState(false);
+  const handleCloseAdd = () => setShowAdd(false);
+  const handleShowAdd = () => { setShowAdd(true) };
+  const [recipeIdToFav, setRecipeIdToFav] = useState(null);
+
+
   //pagination
   const [page, setPage] = useState(1)
   const limit = 6
@@ -108,10 +120,23 @@ export default function ReciepesList() {
   }
   function cateValueSearch(data) {
     setCateValue(data);
-
   }
   function tagValueSearch(data) {
     setTagValue(data);
+  }
+  async function addFavs(recipeId) {
+    setBtnLoad(true)
+    try {
+      let response = await axiosInstance.post(FAVS_URLS.ADD_FAVS, { recipeId: recipeId })
+      setBtnLoad(false)
+      toast.success(response?.data?.message || "recipe added successfully.")
+      handleCloseAdd()
+
+    } catch (error) {
+      setBtnLoad(false)
+      toast.error(error?.response?.data?.message || "Error");
+    }
+
 
   }
   useEffect(() => {
@@ -167,15 +192,43 @@ export default function ReciepesList() {
         </Modal.Footer>
       </Modal>
 
+
+      {/* /Add Model/ */}
+      <Modal show={showAdd} onHide={handleCloseAdd} animation={false}>
+        <Modal.Header closeButton className='title_alart_Cate'>
+          <i class="fa-solid fa-align-left me-3"></i> Favs Recipes
+        </Modal.Header>
+        <Modal.Body>
+          <div className="text-center">
+          <img className='img-alartFavs w-75 rounded mb-3' src={`${baseIMG}/${imgFavs}`} alt="img_Recipe" /> 
+            <h3>Are you sure  </h3>
+            <p>{`you want to add ${nameRecipe} to your favorites`}</p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="" className='icon_delete btn-outline-danger' onClick={handleCloseAdd}>
+            Cancel
+          </Button>
+          <Button className=' btn-success px-4 ' onClick={() => addFavs(recipeIdToFav)} >
+            {btnLoad ? <i className='fa fa-spinner fa-spin'></i> : 'Yes'}
+          </Button>
+
+        </Modal.Footer>
+      </Modal>
+
+
+
+
       <Header title={'Recipes'} subTitle={'Items'} Descraption={'You can now add your items that any user can order it from the Application and you can edit'} ImgHeader={imgRespice} />
       <div className="container d-flex justify-content-between align-items-center  all_listCate my-3">
         <div className="Caegory_titel">
           <h3>Categories Table Details</h3>
           <p className='muted'>You can check all details</p>
         </div>
-        <div>
+        {role === "SystemUser" ? '' : <div>
           <Link to="/dashboard/recipes-data" className='btnAdd_cate text-decoration-none'>Add New Recipe </Link>
-        </div>
+        </div>}
+
       </div>
 
       <div className="container ">
@@ -220,7 +273,6 @@ export default function ReciepesList() {
             </tr>
 
           </thead>
-
           <tr>
             <td colSpan="7">
               {lodingPage && (
@@ -250,8 +302,25 @@ export default function ReciepesList() {
 
                         <ul className="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
                           <li onClick={() => { handleShowView(i.id) }}><span className="dropdown-item" > <i className=" p-2 fa-solid fa-eye"></i>View</span></li>
-                          <li onClick={() => { navigate(`/dashboard/recipes-data`, { state: i }) }} ><span className="dropdown-item" ><i className=" p-2 fa-solid fa-pen-to-square"></i>Edit</span></li>
-                          <li onClick={() => { handleShow(i.id), setNameRecipe(i.name) }}><span className="dropdown-item " ><i className="p-2 fa-solid fa-trash"></i>Delete</span></li>
+                          {role === "SystemUser" ?
+                            <>
+                              <li onClick={() => { handleShowAdd(i.id), setNameRecipe(i.name), setRecipeIdToFav(i.id),setImgFavs(i.imagePath) }}>
+                                <span className="dropdown-item">
+                                  <i
+                                    className={`p-2 fa-solid fa-heart `}
+                                  ></i>
+                                  Add to favourite
+                                </span>
+                              </li>
+                            </> :
+                            <>
+                              <li onClick={() => { navigate(`/dashboard/recipes-data`, { state: i }) }} ><span className="dropdown-item" ><i className=" p-2 fa-solid fa-pen-to-square"></i>Edit</span></li>
+                              <li onClick={() => { handleShow(i.id), setNameRecipe(i.name) }}><span className="dropdown-item " ><i className="p-2 fa-solid fa-trash"></i>Delete</span></li>
+                            </>
+                          }
+
+
+
                         </ul>
                       </div>
                     </div>

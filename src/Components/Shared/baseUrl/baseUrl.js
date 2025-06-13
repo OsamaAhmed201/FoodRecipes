@@ -20,6 +20,8 @@ export const axiosInstance = axios.create(
         UPDATE_USER: (id) => `/Users/${id}`,
         DELETE_USER: (id) => `/Users/${id}`,
         CHANGE_PASSWORD: `/Users/ChangePassword`,
+        UPDATE_PROFILE: `/Users/`,
+        CURRENT_USER:`/Users/currentUser`
     }
 
 //////////CategoriesApi
@@ -42,4 +44,9 @@ export const RECIPES_URLS = {
 export const TAGS_URLS = {
     GET_ALL_TAGS: `/tag/`,
 }
-
+/////////favs
+export const FAVS_URLS = {
+    ADD_FAVS: `/userRecipe/`,
+    GET_ALL_FAVS: `/userRecipe/`,
+    DELETE_FAV: (id) => `/userRecipe/${id}`,
+}

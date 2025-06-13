@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 export default function Dashboard() {
   let { LogData } = useContext(AuthContext)
-  let userName = (LogData?.userName);
+  let userName = LogData?.userName;
 
   return (
     <>

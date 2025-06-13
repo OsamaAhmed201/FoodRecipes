@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import imgCategory from '../../../assets/category.svg'
 import Header from './../../Shared/Header/Header';
 import NoDataFound from '../../Shared/NoDataFound/NoDataFound.jsx';
@@ -9,9 +9,17 @@ import { set, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify'
 import CategoryData from '../CategoryData/CategoryData.jsx';
 import { axiosInstance, CATEGORIES_URLS } from '../../Shared/baseUrl/baseUrl.js';
+import { AuthContext } from '../../Context/authContext/AuthContextProvider.jsx';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function CategoryList() {
+let navigate=useNavigate()
+  let { LogData } = useContext(AuthContext)
+  let role = LogData?.userGroup
+  if (role ==="SystemUser") {
+    navigate('/dashboard')
+  }
   //pagination
   const [page, setPage] = useState(1)
   const limit = 6
@@ -121,7 +129,7 @@ export default function CategoryList() {
     getAllCategories(nameValue)
 
 
-  }, [page,nameValue])
+  }, [page, nameValue])
   return (
     <>
 
@@ -191,12 +199,13 @@ export default function CategoryList() {
           <h3>Categories Table Details</h3>
           <p className='muted'>You can check all details</p>
         </div>
-        <div>
+         <div>
           <button onClick={() => {
             setTypeModle('add');
             setShowAdd(true);
           }} className='btnAdd_cate'>Add New Category</button>
         </div>
+
       </div>
       <div className="">
         <input className='form-control w-50 ms-5 my-4' type="text" placeholder='Search by name' onChange={(e) => setSearch(e.target.value)} />
@@ -238,15 +247,18 @@ export default function CategoryList() {
                       <div className="actionBtn">
 
                         <ul className="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
-                          <li onClick={() => handleShowView(i.id)} ><span className="dropdown-item" > <i className=" p-2 fa-solid fa-eye"></i>View</span></li>
-                          <li onClick={() => {
-                            setEditId(i.id)
-                            setTypeModle('edit');
-                            setShowAdd(true);
-                            setValue('name', i.name)
+                         
+                            <li onClick={() => handleShowView(i.id)} ><span className="dropdown-item" > <i className=" p-2 fa-solid fa-eye"></i>View</span></li>
+                            <li onClick={() => {
+                              setEditId(i.id)
+                              setTypeModle('edit');
+                              setShowAdd(true);
+                              setValue('name', i.name)
 
-                          }}
-                          ><span className="dropdown-item" ><i className=" p-2 fa-solid fa-pen-to-square"></i>Edit</span></li>
+                            }}
+                            ><span className="dropdown-item" ><i className=" p-2 fa-solid fa-pen-to-square"></i>Edit</span></li>
+
+
                           <li onClick={() => handleShow(i.id)}><span className="dropdown-item " ><i className="p-2 fa-solid fa-trash"></i>Delete</span></li>
                         </ul>
                       </div>
@@ -261,15 +273,13 @@ export default function CategoryList() {
                 </td>
               </tr>
             }
-
-
           </tbody>
         </table>
       </div>
 
       {/* pagination */}
       <div className="d-flex justify-content-center">
-         <ul className="pagination">
+        <ul className="pagination">
 
           <li
             onClick={() => setPage((old) => Math.max(old - 1, 1))}
@@ -334,7 +344,7 @@ export default function CategoryList() {
 
 
 
-     
+
     </>
   )
 }

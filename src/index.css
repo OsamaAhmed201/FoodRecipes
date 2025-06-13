@@ -488,92 +488,226 @@
 .recipe_Resutel {
   font-size: 16px;
 }
+
 /* ///notFoundPage */
-.notFoundPage{
+.notFoundPage {
   background-image: url(../src/assets/Vector.png);
   height: 100vh;
   background-position: center center;
   background-size: cover;
   overflow: hidden;
 }
-.notFoundContant{
-top: 0px;
-bottom: 0px;
-left: 0px;
-right: 0px;
+
+.notFoundContant {
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
 }
-.notFoundContant h4{
+
+.notFoundContant h4 {
   font-size: 32px;
   font-weight: 400;
 }
-.notFoundContant h2{
+
+.notFoundContant h2 {
   font-size: 40px;
   font-weight: 700;
 }
-.btn_notFound{
-  border: none ;
+
+.btn_notFound {
+  border: none;
   border-radius: 8px;
- font-weight: 700;  
- margin-top: 20px;
+  font-weight: 700;
+  margin-top: 20px;
 }
-.itemNotFound{
+
+.itemNotFound {
   display: flex;
   align-items: start !important;
   justify-self: auto;
 }
-.pagination button{
-  border: none ;
+
+.pagination button {
+  border: none;
   border-radius: 8px;
   font-weight: 500;
-  background-color:  #009247 ;
-  color: white ;
+  background-color: #009247;
+  color: white;
   padding: 8px 20px !important;
 }
-.pagination span{
 
- font-size: larger;
-  color:  #009247 !important;
+.pagination span {
+
+  font-size: larger;
+  color: #009247 !important;
 }
-.fa-eye{
+
+.fa-eye {
   cursor: pointer;
   color: rgb(154, 154, 244);
 }
-.fa-trash{
+
+.fa-trash {
   cursor: pointer;
   color: rgb(182, 53, 53);
 }
-.fa-pen-to-square{
+
+.fa-pen-to-square {
   cursor: pointer;
   color: rgb(43, 195, 119);
 }
-.pagination a{
+
+.pagination a {
   display: flex;
   justify-content: center;
   align-items: center;
   color: #009247 !important;
 }
-.pagination a:hover{
-  background-color: #aaa5a5!important;
-  color: white !important;
-}
-.pagination :focus{
-  background-color: #009247 !important;
-  color: white !important;
-  
-}
-.page-link{
-  color: #009247 !important;
-height: 40px;
 
-} 
-.page-item.active .page-link{
+.pagination a:hover {
+  background-color: #aaa5a5 !important;
+  color: white !important;
+}
+
+.pagination :focus {
+  background-color: #009247 !important;
+  color: white !important;
+
+}
+
+.page-link {
+  color: #009247 !important;
+  height: 40px;
+
+}
+
+.page-item.active .page-link {
   background-color: #009247 !important;
   color: white !important;
 }
- .page-item{
+
+.page-item {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-bottom: 10px;
   cursor: pointer;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card {
+  border-radius: 15px !important;
+
+}
+
+.card-bodys img {
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+
+.Contant_Card {
+  padding: 10px;
+}
+
+.Contant_Card i {
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+
+  background-color: white;
+  color: #1b8a1b;
+  border-radius: 11px;
+  padding: 6px;
+  border: #000 solid 1px;
+}
+
+.spin-Persone {
+  transform: rotateZ(45deg);
+  perspective: 1000px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  color: #fff;
+}
+
+.spin-Persone:before,
+.spin-Persone:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+  transform: rotateX(70deg);
+  animation: 1s spin linear infinite;
+}
+
+.spin-Persone:after {
+  color: #1b8a1b;
+  transform: rotateY(70deg);
+  animation-delay: .4s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotateZ(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotateZ(360deg);
+  }
+}
+
+@keyframes rotateccw {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+@keyframes spin {
+
+  0%,
+  100% {
+    box-shadow: .2em 0px 0 0px currentcolor;
+  }
+
+  12% {
+    box-shadow: .2em .2em 0 0 currentcolor;
+  }
+
+  25% {
+    box-shadow: 0 .2em 0 0px currentcolor;
+  }
+
+  37% {
+    box-shadow: -.2em .2em 0 0 currentcolor;
+  }
+
+  50% {
+    box-shadow: -.2em 0 0 0 currentcolor;
+  }
+
+  62% {
+    box-shadow: -.2em -.2em 0 0 currentcolor;
+  }
+
+  75% {
+    box-shadow: 0px -.2em 0 0 currentcolor;
+  }
+
+  87% {
+    box-shadow: .2em -.2em 0 0 currentcolor;
+  }
 }

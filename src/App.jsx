@@ -1,10 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import AuthLayout from './Components/Shared/AuthLayout/AuthLayout';
-
-
 import Forget_PassWord from './Components/Authintcation/Forget_PassWord/Forget_PassWord';
 import VerifyAcount from './Components/Authintcation/VerifyAcount/VerifyAcount';
-
 import MasterLayout from './Components/Shared/MasterLayout/MasterLayout';
 import Dashboard from './Components/Dashboard/Component/Dashboard/Dashboard';
 import ReciepesList from './Components/Reciepes/ReciepesList/ReciepesList';
@@ -20,6 +17,7 @@ import AuthContextProvider from "./Components/Context/authContext/AuthContextPro
 import ProtectedRouting from "./Components/Shared/ProtectedRouting/ProtectedRouting.jsx";
 import FavoList from './Components/Favouruites/FavoList/FavoList';
 import ChangePassword from "./Components/Shared/ChangePassword/ChangePassword.jsx";
+import Personal_data from "./Components/Shared/Personal_data/Personal_data.jsx";
 
 
 function App() {
@@ -47,10 +45,11 @@ function App() {
         { path: 'recipes-data', element: <ReciepesFormDate /> },
         { path: 'categories', element: <CategoryList /> },
         { path: 'category-data', element: <CategoryData /> },
+        { path: 'personal_data', element: <Personal_data /> },
         { path: 'users', element: <UserList /> },
         { path: 'favouruites', element: <FavoList /> },
         { path: 'change-password', element: <ChangePassword /> },
-        
+
       ],
       errorElement: <Notfound />
     }
