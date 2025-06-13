@@ -3,15 +3,16 @@ import imguser from '../../../assets/img_User.png'
 import Dropdown from 'react-bootstrap/Dropdown';
 import { AuthContext } from '../../Context/authContext/AuthContextProvider.jsx';
 import { Link, useNavigate } from 'react-router-dom';
+import { set } from 'react-hook-form';
 export default function Navbar() {
-  let {  setToken } = useContext(AuthContext)
+  let {  setToken,setLogData,LogData } = useContext(AuthContext)
   let navigate = useNavigate()
   function logOut() {
     localStorage.removeItem("token")
     setToken(null)
     navigate("/login")
   }
-  let { LogData } = useContext(AuthContext)
+
   let userName = (LogData)
 
 

@@ -3,12 +3,13 @@ import logoimg from '../../../assets/foodRecipe.png'
 import { data, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import { jwtDecode } from 'jwt-decode';
 import { AuthContext } from '../../Context/authContext/AuthContextProvider.jsx'
 import { axiosInstance, USERS_URLS } from '../../Shared/baseUrl/baseUrl.js'
 import { EMAIL_VALIDTION, PASSWORD_VALIDTION } from '../../Shared/Validtion/Validtion.js'
 export default function Login() {
   let [loding, setLoding] = useState(false)
-  let { setToken } = useContext(AuthContext)
+  let { setToken,setLogData} = useContext(AuthContext)
   let navigate = useNavigate()
   let { register, handleSubmit, formState: { errors } } = useForm()
   const [show, setShow] = useState(false)
@@ -22,10 +23,12 @@ export default function Login() {
       let respons = await axiosInstance.post(USERS_URLS.LOGIN, data)
 
       if (respons.statusText === 'OK') {
+        const token = respons.data.token;
         toast.success(`Login successful`)
         setLoding(false)
-        setToken(respons.data.token)
-        localStorage.setItem("token", respons.data.token)
+        setToken(token)
+        setLogData(jwtDecode(token))
+        localStorage.setItem("token", token)
         navigate('/dashboard')
       }
 
@@ -41,7 +44,7 @@ export default function Login() {
         <div className="d-flex justify-content-center align-items-center vh-100 bg_load">
           <div class="loader"></div>
         </div>
-      ): <div className='All_AuthContant'>
+      ) : <div className='All_AuthContant'>
         <div className="container-fluid overlay">
           <div className="row vh-100 justify-content-center align-items-center">
             <div className="col-md-6 bg-white  rounded-3 py-5 px-5">
@@ -95,7 +98,7 @@ export default function Login() {
 
       </div>}
 
-     
+
 
     </>
 

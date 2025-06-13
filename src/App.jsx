@@ -21,6 +21,7 @@ import Personal_data from "./Components/Shared/Personal_data/Personal_data.jsx";
 
 
 function App() {
+    
   let routes = createBrowserRouter([
     {
       path: '',
